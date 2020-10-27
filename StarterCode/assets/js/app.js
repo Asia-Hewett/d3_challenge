@@ -86,3 +86,85 @@ function renderXAxes(newXScale, xAxis) {
     return circlesGroup;
   }
   
+  // Function used for updating text in circles group with a transition to new text.
+  function renderText(circletextGroup, newXScale, newYScale, chosenXAxis, chosenYAxis) {
+    circletextGroup.transition()
+      .duration(1000)
+      .attr("x", d => newXScale(d[chosenXAxis]))
+      .attr("y", d => newYScale(d[chosenYAxis]));
+        
+    return circletextGroup;
+  }
+  
+  // Function used for updating circles group with new tooltip.
+  function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
+  
+    // X Axis
+    if (chosenXAxis === "poverty") {
+        var xlabel = "Poverty: ";
+    }
+    else if (chosenXAxis === "income") {
+        var xlabel = "Median Income: "
+    }
+    else {
+        var xlabel = "Age: "
+    }
+  
+    // Y Axis
+    if (chosenYAxis === "healthcare") {
+        var ylabel = "Lacks Healthcare: ";
+    }
+    else if (chosenYAxis === "smokes") {
+        var ylabel = "Smokers: "
+    }
+    else {
+        var ylabel = "Obesity: "
+    }
+  
+    var toolTip = d3.tip()
+    .attr("class", "tooltip")
+    .style("background", "black")
+    .style("color", "white")
+    .offset([120, -60])
+    .html(function(d) {
+        if (chosenXAxis === "age") {
+            // All yAxis tooltip labels presented and formated as %.
+            // Display Age without format for xAxis.
+            return (`${d.state}<hr>${xlabel} ${d[chosenXAxis]}<br>${ylabel}${d[chosenYAxis]}%`);
+          } else if (chosenXAxis !== "poverty" && chosenXAxis !== "age") {
+            // Display Income in dollars for xAxis.
+            return (`${d.state}<hr>${xlabel}$${d[chosenXAxis]}<br>${ylabel}${d[chosenYAxis]}%`);
+          } else {
+            // Display Poverty as percentage for xAxis.
+            return (`${d.state}<hr>${xlabel}${d[chosenXAxis]}%<br>${ylabel}${d[chosenYAxis]}%`);
+          }      
+    });
+  
+    circlesGroup.call(toolTip);
+    //mouseon event
+    circlesGroup.on("mouseover", function(data) {
+      toolTip.show(data, this);
+    })
+    //mouseout event
+     .on("mouseout", function(data,index) {
+      toolTip.hide(data)
+    });
+  
+  return circlesGroup;
+  }
+  
+  
+  // Import Data
+  d3.csv("assets/data/data.csv").then(function(healthData) {
+  
+      // Step 1: Parse Data/Cast as numbers
+      // ==============================
+      healthData.forEach(function(data) {
+        data.poverty = +data.poverty;
+        data.healthcare = +data.healthcare;
+        data.age = +data.age;
+        data.income = +data.income;
+        data.smokes = +data.smokes;
+        data.obesity = +data.obesity;
+      });
+  
