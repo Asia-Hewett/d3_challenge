@@ -64,3 +64,25 @@ function renderXAxes(newXScale, xAxis) {
   return xAxis;
 }
 
+  // Function used for updating yAxis var upon click on axis label.
+  function renderYAxes(newYScale, yAxis) {
+    var leftAxis = d3.axisLeft(newYScale);
+  
+    yAxis.transition()
+          .duration(1000)
+          .call(leftAxis);
+  
+    return yAxis;
+  }
+  
+  // Function used for updating circles group with a transition to new circles.
+  function renderCircles(circlesGroup, newXScale, newYScale, chosenXAxis, chosenYAxis) {
+  
+    circlesGroup.transition()
+      .duration(1000)
+      .attr("cx", d => newXScale(d[chosenXAxis]))
+      .attr("cy", d => newYScale(d[chosenYAxis]));
+  
+    return circlesGroup;
+  }
+  
