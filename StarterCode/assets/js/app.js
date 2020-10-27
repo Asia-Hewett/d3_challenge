@@ -1,4 +1,4 @@
-d3.csv('/assets/data/data.csv').then(data => {
+d3.csv('assets/data/data.csv').then(data => {
     console.log(data)
 
     const svgWidth = 960
