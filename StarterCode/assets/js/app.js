@@ -168,3 +168,38 @@ function renderXAxes(newXScale, xAxis) {
         data.obesity = +data.obesity;
       });
   
+      // Step 2: xlinear scale function above csv import
+      // ==============================
+      var xLinearScale = xScale(healthData, chosenXAxis);
+      var yLinearScale = yScale(healthData, chosenYAxis);
+  
+  
+      // Step 3: Create xy axis functions
+      // ==============================
+      var bottomAxis = d3.axisBottom(xLinearScale);
+      var leftAxis = d3.axisLeft(yLinearScale);
+  
+      // Step 4: Append Axes to the chart
+      // ==============================
+      var xAxis = chartGroup.append("g")
+      .classed("x-axis", true)
+      .attr("transform", `translate(0, ${height})`)
+      .call(bottomAxis);
+  
+      var yAxis = chartGroup.append("g")
+      .classed("y-axis", true)
+      .call(leftAxis);
+  
+        
+      // Step 5: Create Circles
+      // ==============================
+      var circlesGroup = chartGroup.selectAll("circle")
+      .data(healthData)
+      .enter()
+      .append("circle")
+      .attr("cx", d => xLinearScale(d[chosenXAxis]))
+      .attr("cy", d => yLinearScale(d[chosenYAxis]))
+      .attr("r", "15")
+      .attr("fill", "pink")
+      .attr("opacity", ".5");
+  
