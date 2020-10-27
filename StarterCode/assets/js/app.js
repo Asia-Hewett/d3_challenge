@@ -264,7 +264,7 @@ function renderXAxes(newXScale, xAxis) {
           .text("Obesity (%)");
   
       // Update tool tip function above csv import.
-      let circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+      circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
   
       // X Axis labels event listener.
       labelsGroup.selectAll("text")
