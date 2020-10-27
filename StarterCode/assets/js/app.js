@@ -203,3 +203,63 @@ function renderXAxes(newXScale, xAxis) {
       .attr("fill", "pink")
       .attr("opacity", ".5");
   
+      // Add State abbr. text to circles. and some offset to y
+      var circletextGroup = chartGroup.selectAll()
+      .data(healthData)
+      .enter()
+      .append("text")
+      .text(d => (d.abbr))
+      .attr("x", d => xLinearScale(d[chosenXAxis]))
+      .attr("y", d => yLinearScale(d[chosenYAxis]))
+      .style("font-size", "11px")
+      .style("text-anchor", "middle")
+      .style('fill', 'black');
+  
+      var labelsGroup = chartGroup.append("g")
+      .attr("transform", `translate(${width / 2}, ${height + 20})`);
+  
+      var povertyLabel = labelsGroup.append("text")
+          .attr("x", 0)
+          .attr("y", 0)
+          .attr("value", "poverty") // value to grab for event listener.
+          .classed("active", true)
+          .text("In Poverty (%)");
+      
+      var healthcareLabel = labelsGroup.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("x", (margin.left) * 2.8)
+          .attr("y", 0 - (height+12))
+          .attr("value", "healthcare") // value to grab for event listener.
+          .classed("active", true)
+          .text("Lacks Healthcare (%)");
+  
+      var ageLabel = labelsGroup.append("text")
+          .attr("x", 0)
+          .attr("y", 20)
+          .attr("value", "age") // value to grab for event listener.
+          .classed("inactive", true)
+          .text("Age (Median)");
+  
+      var smokeLabel = labelsGroup.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("x", (margin.left) * 2.8)
+          .attr("y", 0 - (height +32))
+          .attr("value", "smokes") // value to grab for event listener.
+          .classed("inactive", true)
+          .text("Smokes (%)");
+  
+      var incomeLabel = labelsGroup.append("text")
+          .attr("x", 0)
+          .attr("y", 40)
+          .attr("value", "income") // value to grab for event listener.
+          .classed("inactive", true)
+          .text("Household Income (Median)");
+  
+      var obesityLabel = labelsGroup.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("x", (margin.left) * 2.8)
+          .attr("y", 0 - (height +52))
+          .attr("value", "obesity") // value to grab for event listener.
+          .classed("inactive", true)
+          .text("Obesity (%)");
+  
